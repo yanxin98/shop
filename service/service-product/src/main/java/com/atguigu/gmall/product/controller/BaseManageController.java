@@ -1,10 +1,9 @@
 package com.atguigu.gmall.product.controller;
 
 import com.atguigu.gmall.common.result.Result;
-import com.atguigu.gmall.model.product.BaseAttrInfo;
-import com.atguigu.gmall.model.product.BaseCategory1;
-import com.atguigu.gmall.model.product.BaseCategory2;
-import com.atguigu.gmall.model.product.BaseCategory3;
+import com.atguigu.gmall.model.product.*;
+import com.atguigu.gmall.product.mapper.BaseSaleAttrMapper;
+import com.atguigu.gmall.product.service.BaseSaleAttrService;
 import com.atguigu.gmall.product.service.ManageService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,9 @@ import java.util.List;
 public class BaseManageController {
     @Autowired
     private ManageService manageService;
+
+    @Autowired
+    private BaseSaleAttrService baseSaleAttrService;
 
     /**
      * 查询所有一级分类信息
@@ -82,7 +84,18 @@ public class BaseManageController {
     @GetMapping("getAttrValueList/{attrId}")
     public Result getAttrValueList(@PathVariable long attrId) {
         BaseAttrInfo baseAttrInfo = manageService.getAttrValueList(attrId);
-        return Result.ok(baseAttrInfo);
+        return Result.ok(baseAttrInfo.getAttrValueList());
+    }
+
+    /**
+     * 获取销售属性
+     * http://api.gmall.com/admin/product/baseSaleAttrList
+     * @return
+     */
+    @GetMapping("baseSaleAttrList")
+    public Result baseSaleAttrList() {
+        List<BaseSaleAttr> baseSaleAttrList = baseSaleAttrService.getBaseSaleAttrList();
+        return Result.ok(baseSaleAttrList);
     }
 
 }

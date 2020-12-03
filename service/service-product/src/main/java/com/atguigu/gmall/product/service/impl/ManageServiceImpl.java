@@ -54,7 +54,7 @@ public class ManageServiceImpl implements ManageService {
     @Transactional
     public void saveAttrInfo(BaseAttrInfo baseAttrInfo) {
         //保存和添加写道一个方法中进行判断通过获取对应的id是否为空
-        if (baseAttrInfo.getId() == null) { //为空添加
+        if (baseAttrInfo.getId() == null || baseAttrInfo.getId()==0) { //为空添加
             baseAttrInfoMapper.insert(baseAttrInfo);
         }else { //不为空就修改
             baseAttrInfoMapper.updateById(baseAttrInfo);
@@ -71,6 +71,8 @@ public class ManageServiceImpl implements ManageService {
         List<BaseAttrValue> attrValueList = baseAttrInfo.getAttrValueList();
         if (!CollectionUtils.isEmpty(attrValueList)) { //当获取的value集合不为空时进行遍历，避免空指针异常
             for (BaseAttrValue baseAttrValue : attrValueList) {
+                //给 baseAttrValue 的 attr_id 属性赋值
+                baseAttrValue.setAttrId(baseAttrInfo.getId());
                 baseAttrValueMapper.insert(baseAttrValue);
             }
         }
